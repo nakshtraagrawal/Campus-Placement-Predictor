@@ -24,3 +24,10 @@ git commit -m "feat: polish Streamlit app and add screenshots"
 git add notebooks/ report/ report_overleaf.zip src/ run_all.py app/pages/5_About.py reports/ DECISIONS.md COMMITS.md
 git commit -m "docs: add walkthrough notebook and IEEE LaTeX report"
 ```
+
+## Part 3b — README, report TODO, final checks
+
+```
+git add README.md REPORT_TODO.md report/main.tex report_overleaf.zip COMMITS.md
+git commit -m "docs: final README, report TODO and section references"
+```
