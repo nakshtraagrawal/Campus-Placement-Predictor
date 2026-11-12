@@ -7,7 +7,7 @@ from components import AMBER, NOT_PLACED, PLACED, PRIMARY, card, load_meta, load
 from src.predict import predict_batch, template_frame
 
 ok = setup_page("Batch Prediction", "Upload a CSV with many students to score them all at once and find "
-                "who needs support first. Risk band: High (< 35%), Medium (35–65%), Low (≥ 65%).", icon="📁")
+                "who needs support first. Risk band: High (< 35%), Medium (35–65%), Low (≥ 65%).")
 if not ok:
     st.stop()
 
@@ -17,8 +17,8 @@ with c1:
     card("1 · Download the template",
          "The CSV must contain these columns: <code>" + "</code>, <code>".join(meta["features"]) + "</code>. "
          "Extra columns (e.g. a roll number) are kept in the output.")
-    st.download_button("⬇️ Download CSV template", template_frame(meta).to_csv(index=False).encode(),
-                       "placement_template.csv", "text/csv", use_container_width=True)
+    st.download_button("Download CSV template", template_frame(meta).to_csv(index=False).encode(),
+                       "placement_template.csv", "text/csv", width="stretch")
 with c2:
     card("2 · Upload your file", "Rows with missing columns, non-numeric or out-of-range values are listed "
          "below and skipped; all other rows are scored.")
@@ -44,7 +44,7 @@ except Exception:
     st.stop()
 
 if errors:
-    with st.expander(f"⚠️ {len(errors)} problem(s) found — affected rows were skipped", expanded=res.empty):
+    with st.expander(f"{len(errors)} problem(s) found — affected rows were skipped", expanded=res.empty):
         st.markdown("\n".join(f"- {e}" for e in errors[:200]))
         if len(errors) > 200:
             st.caption(f"... and {len(errors) - 200} more.")
@@ -65,11 +65,14 @@ st.write("")
 c1, c2 = st.columns([3, 2], gap="large")
 with c1:
     st.markdown("##### Results (click a column header to sort)")
-    show = res.sort_values("PlacementProbability")
-    st.dataframe(show, hide_index=True, use_container_width=True, height=420,
+    # Key columns first: row/ID columns, then the prediction, then the inputs
+    out_cols = ["PlacementProbability", "Prediction", "RiskBand"]
+    id_cols = [c for c in res.columns if c not in meta["features"] + out_cols]
+    show = res[id_cols + out_cols + meta["features"]].sort_values("PlacementProbability")
+    st.dataframe(show, hide_index=True, width="stretch", height=420,
                  column_config={"PlacementProbability": st.column_config.ProgressColumn(
                      "Placement probability", format="%.2f", min_value=0.0, max_value=1.0)})
-    st.download_button("⬇️ Download results CSV", res.to_csv(index=False).encode(), "placement_predictions.csv",
+    st.download_button("Download results CSV", res.to_csv(index=False).encode(), "placement_predictions.csv",
                        "text/csv", type="primary")
 with c2:
     fig = go.Figure(go.Histogram(x=100 * res["PlacementProbability"], nbinsx=20, marker_color=PRIMARY,
@@ -78,9 +81,9 @@ with c2:
                   annotation_text="threshold")
     fig.update_layout(title="Distribution of placement probabilities", height=260,
                       xaxis_title="Probability (%)", yaxis_title="Students")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     counts = res["RiskBand"].value_counts().reindex(["High", "Medium", "Low"]).fillna(0)
     fig = go.Figure(go.Bar(x=counts.index, y=counts.values, marker_color=[NOT_PLACED, AMBER, PLACED],
                            hovertemplate="%{x} risk: %{y} students<extra></extra>"))
     fig.update_layout(title="Students per risk band", height=240, yaxis_title="Students")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")

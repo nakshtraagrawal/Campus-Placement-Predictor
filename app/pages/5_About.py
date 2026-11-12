@@ -3,7 +3,7 @@ import streamlit as st
 
 from components import ROOT, card, load_metrics, setup_page
 
-ok = setup_page("About", "Problem statement, team, technology and an honest description of the data.", icon="ℹ️")
+ok = setup_page("About", "Problem statement, team, technology and an honest description of the data.")
 if not ok:
     st.stop()
 
@@ -18,9 +18,8 @@ with c1:
     card("Dataset",
          f"Base data: the public <i>Placement Prediction Dataset</i> (<code>placementdata.csv</code>, "
          f"{m['data']['raw_rows']:,} students) from Kaggle, downloaded via the Hugging Face mirror "
-         f"<a href='{m['data']['huggingface_mirror']}'>{m['data']['huggingface_mirror']}</a>. "
-         f"Original Kaggle page: <a href='{m['data']['kaggle_original']}'>{m['data']['kaggle_original']}</a>.")
-    card("⚠️ Honesty note",
+         f"<a href='{m['data']['huggingface_mirror']}'>{m['data']['huggingface_mirror']}</a>.")
+    card("Data limitations",
          "<b>ProgrammingSkills</b> and <b>Attendance</b> are not in any public dataset, so they were "
          "<b>simulated</b> with a documented, seeded formula (modest dependence on projects, internships, "
          "CGPA and the outcome). Their importance therefore reflects our simulation assumptions, not real-world "
@@ -37,7 +36,7 @@ with c2:
          "<code>python run_all.py</code> with a fixed random seed (42).")
     pdf = ROOT / "report" / "main.pdf"
     if pdf.exists():
-        st.download_button("📄 Download the project report (PDF)", pdf.read_bytes(), "placement_report.pdf",
-                           "application/pdf", use_container_width=True)
+        st.download_button("Download the project report (PDF)", pdf.read_bytes(), "placement_report.pdf",
+                           "application/pdf", width="stretch")
     else:
         st.caption("The project report (LaTeX source) is in the <code>report/</code> folder.")

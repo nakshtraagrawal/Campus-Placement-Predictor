@@ -14,7 +14,7 @@ seaborn>=0.13,<1
 plotly>=5.18,<7
 
 # Web app
-streamlit>=1.36,<2
+streamlit>=1.50,<2
 
 # Data download
 huggingface_hub>=0.23,<1

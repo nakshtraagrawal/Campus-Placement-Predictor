@@ -80,6 +80,10 @@ h1, h2, h3, h4 {{ font-family: {FONT}; font-weight: 600 !important; letter-spaci
 }}
 .action {{ border-left: 4px solid {PLACED}; }}
 .insight {{ border-left: 4px solid {PRIMARY}; padding: 12px 16px; }}
+[data-testid="stMain"] [data-testid="stPageLink"] a {{
+    border: 1px solid {PRIMARY}; border-radius: 8px; justify-content: center; background: #FFFFFF;
+}}
+[data-testid="stMain"] [data-testid="stPageLink"] a p {{ color: {PRIMARY}; font-weight: 600; }}
 [data-testid="stSidebar"] .sidebar-title {{ font-weight: 700; font-size: 1.1rem; }}
 </style>
 """
@@ -138,12 +142,12 @@ def outputs_ready() -> bool:
 # ---------------------------------------------------------------------------
 # Layout helpers
 # ---------------------------------------------------------------------------
-def setup_page(title: str, subtitle: str, icon: str = "🎓") -> bool:
+def setup_page(title: str, subtitle: str) -> bool:
     """Page config + CSS + sidebar + header. Returns False if the pipeline hasn't been run."""
-    st.set_page_config(page_title=f"{title} · Campus Placement Predictor", page_icon=icon, layout="wide")
+    st.set_page_config(page_title=f"{title} · Campus Placement Predictor", layout="wide")
     inject_css()
     sidebar()
-    st.title(f"{icon} {title}")
+    st.title(title)
     st.markdown(f'<div class="subtitle">{subtitle}</div>', unsafe_allow_html=True)
     if not outputs_ready():
         card("Model not found",
@@ -155,7 +159,7 @@ def setup_page(title: str, subtitle: str, icon: str = "🎓") -> bool:
 
 def sidebar() -> None:
     with st.sidebar:
-        st.markdown('<div class="sidebar-title">🎓 Campus Placement Predictor</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sidebar-title">Campus Placement Predictor</div>', unsafe_allow_html=True)
         st.caption("ML project · explainable placement prediction")
         if outputs_ready():
             meta = load_meta()
@@ -183,7 +187,7 @@ def tiles(items: list[tuple]) -> None:
 def show_figure(name: str, caption: str = "") -> None:
     path = config.FIG_DIR / name
     if path.exists():
-        st.image(str(path), caption=caption, use_container_width=True)
+        st.image(str(path), caption=caption, width="stretch")
     else:
         st.info(f"Figure {name} not found - run `python run_all.py`.")
 

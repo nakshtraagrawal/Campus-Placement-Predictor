@@ -11,7 +11,7 @@ from src import config
 from src.predict import predict_one, what_if
 
 ok = setup_page("Predict", "Enter a student's profile to estimate their chance of placement, see which "
-                "factors drive the prediction, and get concrete suggestions to improve it.", icon="🎯")
+                "factors drive the prediction, and get concrete suggestions to improve it.")
 if not ok:
     st.stop()
 
@@ -27,10 +27,10 @@ ACTIONS = {
     "Attendance": "Raise attendance by {step:.0f} points",
 }
 PRESETS = {
-    "Strong profile": {"CGPA": 8.8, "ProgrammingSkills": 9, "Internships": 2, "Certifications": 3,
+    "Strong": {"CGPA": 8.8, "ProgrammingSkills": 9, "Internships": 2, "Certifications": 3,
                        "CommunicationSkills": 4.7, "AptitudeScore": 90, "Projects": 3, "Attendance": 93.0},
-    "Average profile": {f: (round(R[f]["default"]) if R[f]["integer"] else round(R[f]["default"], 1)) for f in FEATS},
-    "At-risk profile": {"CGPA": 6.6, "ProgrammingSkills": 3, "Internships": 0, "Certifications": 0,
+    "Average": {f: (round(R[f]["default"]) if R[f]["integer"] else round(R[f]["default"], 1)) for f in FEATS},
+    "At risk": {"CGPA": 6.6, "ProgrammingSkills": 3, "Internships": 0, "Certifications": 0,
                         "CommunicationSkills": 3.4, "AptitudeScore": 60, "Projects": 0, "Attendance": 68.0},
 }
 
@@ -50,16 +50,16 @@ def apply_preset(name):
 
 
 for f in FEATS:  # initialise widget state once
-    st.session_state.setdefault(f"in_{f}", PRESETS["Average profile"][f])
+    st.session_state.setdefault(f"in_{f}", PRESETS["Average"][f])
 
 left, right = st.columns([5, 7], gap="large")
 
 # ------------------------------------------------------------------ form
 with left:
-    st.markdown("##### Quick presets")
+    st.markdown("##### Example profiles")
     pc = st.columns(3)
     for col, name in zip(pc, PRESETS):
-        col.button(name, on_click=apply_preset, args=(name,), use_container_width=True)
+        col.button(name, on_click=apply_preset, args=(name,), width="stretch")
     with st.form("student", border=True):
         st.markdown("##### Student profile")
         vals = {}
@@ -68,7 +68,7 @@ with left:
                                  help=config.FEATURE_DESCRIPTIONS["CGPA"])
         vals["ProgrammingSkills"] = st.slider("Programming skills (1-10)", 1, 10, key="in_ProgrammingSkills",
                                               help=config.FEATURE_DESCRIPTIONS["ProgrammingSkills"])
-        a, b, c = st.columns(3)
+        a, b, c = st.columns([1, 1.3, 1])
         vals["Internships"] = a.number_input("Internships", int(R["Internships"]["min"]), int(R["Internships"]["max"]),
                                              step=1, key="in_Internships", help=config.FEATURE_DESCRIPTIONS["Internships"])
         vals["Certifications"] = b.number_input("Certifications", int(R["Certifications"]["min"]),
@@ -85,7 +85,7 @@ with left:
         lo, hi = ui_bounds("Attendance")
         vals["Attendance"] = st.slider("Attendance (%)", float(lo), float(hi), step=1.0, key="in_Attendance",
                                        help=config.FEATURE_DESCRIPTIONS["Attendance"])
-        submitted = st.form_submit_button("Predict", type="primary", use_container_width=True)
+        submitted = st.form_submit_button("Predict", type="primary", width="stretch")
 
     if submitted:
         try:
@@ -108,7 +108,7 @@ with right:
     p, thr = res["proba"], meta["threshold"]
     good = p >= thr
     color = PLACED if good else NOT_PLACED
-    verdict = "✅ Likely to be Placed" if good else "⚠️ At risk of Not Being Placed"
+    verdict = "Likely to be placed" if good else "At risk of not being placed"
     st.markdown(f'<div class="verdict" style="background:{color}"><div class="big">{verdict}</div>'
                 f'<div class="small">Estimated placement probability: <b>{100 * p:.1f}%</b> '
                 f'(decision threshold {100 * thr:.0f}%) · model: {meta["model_name"]}</div></div>',
@@ -120,8 +120,9 @@ with right:
                "steps": [{"range": [0, 35], "color": "#FECACA"}, {"range": [35, 65], "color": "#FDE68A"},
                          {"range": [65, 100], "color": "#A7F3D0"}],
                "threshold": {"line": {"color": "#4F46E5", "width": 4}, "thickness": 0.9, "value": 100 * thr}}))
-    g.update_layout(height=230, margin=dict(l=30, r=30, t=30, b=0), title="Placement probability")
-    st.plotly_chart(g, use_container_width=True)
+    g.update_traces(number_font=dict(size=44, color="#0F172A"))
+    g.update_layout(height=250, margin=dict(l=40, r=40, t=50, b=20), title="Placement probability")
+    st.plotly_chart(g, width="stretch")
 
     # --- Why this prediction? (SHAP, probability units)
     st.markdown("##### Why this prediction?")
@@ -133,9 +134,12 @@ with right:
                            marker_color=[PLACED if v > 0 else NOT_PLACED for v in sv.values],
                            text=[f"{100 * v:+.1f}" for v in sv.values], textposition="outside",
                            customdata=text, hovertemplate="%{y}<br>%{customdata}<extra></extra>"))
+    span = max(100 * sv.abs().max(), 1.0)
+    fig.update_traces(cliponaxis=False)
+    fig.update_xaxes(range=[min(0, 100 * sv.min()) - 0.3 * span, max(0, 100 * sv.max()) + 0.3 * span])
     fig.update_layout(height=320, xaxis_title="Contribution to placement probability (percentage points)",
                       title=f"Starting from the average student ({100 * res['base_value']:.0f}%)")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     top_pos = sv[sv > 0].sort_values(ascending=False).head(1)
     top_neg = sv[sv < 0].sort_values().head(1)
     msg = []
@@ -153,7 +157,7 @@ with right:
     # --- How to improve your chances
     st.markdown("##### How to improve your chances")
     if p > 0.90:
-        card("🎉 Excellent profile", "The estimated placement probability is already above 90%. "
+        card("Strong profile", "The estimated placement probability is already above 90%. "
              "Keep up the consistent performance and focus on interview preparation.", "action")
     else:
         acts = [a for a in res["what_if"] if a["gain"] > 0.005][:3]
@@ -180,4 +184,4 @@ with right:
         fig.add_vline(x=res["inputs"][f], line_color=AMBER, line_width=3,
                       annotation_text="this student", annotation_position="top")
         fig.update_layout(height=220, showlegend=False, title=nice_feature(f), margin=dict(t=50))
-        col.plotly_chart(fig, use_container_width=True)
+        col.plotly_chart(fig, width="stretch")

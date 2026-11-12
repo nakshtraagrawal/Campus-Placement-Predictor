@@ -7,7 +7,7 @@ import streamlit as st
 from components import PALETTE, card, load_csv, load_metrics, load_report_json, setup_page
 
 ok = setup_page("Models", "Five machine-learning models were tuned with 5-fold cross-validation and tested "
-                "once on unseen students. Higher is better for every metric.", icon="🤖")
+                "once on unseen students. Higher is better for every metric.")
 if not ok:
     st.stop()
 
@@ -23,11 +23,11 @@ cols = {"model": "Model", "accuracy": "Accuracy", "precision": "Precision", "rec
         "roc_auc": "ROC-AUC", "pr_auc": "PR-AUC", "mcc": "MCC", "cv_roc_auc_mean": "CV ROC-AUC",
         "cv_roc_auc_std": "CV SD", "train_time_s": "Train time (s)"}
 table = comp[list(cols)].rename(columns=cols)
-table["Model"] = [f"{n}  ✅ Selected" if s else n for n, s in zip(table["Model"], comp["selected"])]
+table["Model"] = [f"{n} (selected)" if s else n for n, s in zip(table["Model"], comp["selected"])]
 num_cols = [c for c in table.columns if c not in ("Model", "CV SD", "Train time (s)")]
 styled = (table.style.format({c: "{:.3f}" for c in num_cols} | {"CV SD": "{:.3f}", "Train time (s)": "{:.1f}"})
           .highlight_max(subset=num_cols, props="background-color:#D1FAE5;font-weight:600"))
-st.dataframe(styled, hide_index=True, use_container_width=True)
+st.dataframe(styled, hide_index=True, width="stretch")
 st.caption("Green = best value in each column. The model is selected by mean cross-validated ROC-AUC on the "
            "training data (not by the test score), so the test set gives an unbiased final estimate.")
 
@@ -57,7 +57,7 @@ with c1:
     fig.add_trace(go.Scatter(x=[0, 1], y=[0, 1], line=dict(dash="dash", color="#94A3B8"), showlegend=False))
     fig.update_layout(title="ROC curves", xaxis_title="False positive rate", yaxis_title="True positive rate",
                       height=420, legend=dict(x=0.45, y=0.05))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 with c2:
     fig = go.Figure()
     for k, c in curves.items():
@@ -66,7 +66,7 @@ with c2:
                                  hovertemplate="Recall %{x:.2f}<br>Precision %{y:.2f}<extra></extra>"))
     fig.update_layout(title="Precision-recall curves", xaxis_title="Recall", yaxis_title="Precision",
                       height=420, legend=dict(x=0.02, y=0.05))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 c1, c2 = st.columns(2, gap="large")
 with c1:
@@ -77,7 +77,7 @@ with c1:
                              marker_color=colors[k], hovertemplate="%{x}: %{y:.3f}<extra>" + names[k] + "</extra>"))
     fig.update_layout(barmode="group", title="Metric comparison", height=400, yaxis_range=[0, 1],
                       legend=dict(orientation="h", y=-0.15))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 with c2:
     fig = go.Figure()
     for k, scores in tr["cv_fold_roc_auc"].items():
@@ -85,7 +85,7 @@ with c2:
                              hovertemplate="Fold ROC-AUC %{y:.4f}<extra></extra>"))
     fig.update_layout(title="Cross-validation ROC-AUC per fold", height=400, showlegend=False,
                       yaxis_title="ROC-AUC")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 # ------------------------------------------------------------------ confusion matrix
 st.markdown("##### Confusion matrix")
@@ -104,11 +104,11 @@ with c2:
                                texttemplate="%{text}", hovertemplate="Actual %{y}<br>Predicted %{x}<extra></extra>"))
     fig.update_layout(height=330, xaxis_title="Predicted", yaxis_title="Actual", yaxis_autorange="reversed",
                       title=f"{names[sel]} (row-normalised)")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 with st.expander("Tuned hyper-parameters of each model"):
     hp = tr["hyperparameters"]
     rows = [{"Model": names[k], "Parameter": p, "Value": str(round(v, 4) if isinstance(v, float) else v)}
             for k, ps in hp.items() for p, v in ps.items()]
-    st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+    st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
     st.caption(f"RandomizedSearchCV, {tr['search']['cv_folds']}-fold stratified CV, scoring = ROC-AUC.")

@@ -13,8 +13,8 @@ if ok:
     best = tr["models"][tr["best_model"]]
 
     c1, c2, _ = st.columns([1, 1, 4])
-    c1.page_link("pages/1_🎯_Predict.py", label="Predict a student", icon="🎯", use_container_width=True)
-    c2.page_link("pages/2_📊_Insights.py", label="See insights", icon="📊", use_container_width=True)
+    c1.page_link("pages/1_Predict.py", label="Predict a student", width="stretch")
+    c2.page_link("pages/2_Insights.py", label="See insights", width="stretch")
     st.write("")
 
     tiles([

@@ -10,7 +10,7 @@ from components import (NOT_PLACED, PALETTE, PLACED, PRIMARY, card, load_clean, 
 from src import config
 
 ok = setup_page("Insights", "Which student attributes matter most for placement, what the data looks like, "
-                "and what the cleaning pipeline fixed.", icon="📊")
+                "and what the cleaning pipeline fixed.")
 if not ok:
     st.stop()
 
@@ -22,32 +22,40 @@ with tab1:
     fi = load_csv("feature_importance.csv")
     c1, c2 = st.columns([3, 2], gap="large")
     with c1:
-        d = fi.sort_values("consensus_score")
+        d = fi.sort_values("consensus_rank", ascending=False)  # rank 1 at the top
         fig = go.Figure(go.Bar(
             x=d["consensus_score"], y=[nice_feature(f) + (" *" if s else "") for f, s in zip(d["feature"], d["simulated"])],
             orientation="h", marker_color=["#94A3B8" if s else PRIMARY for s in d["simulated"]],
             customdata=d["mean_rank"], hovertemplate="%{y}<br>Score %{x:.2f}<br>Mean rank %{customdata:.1f}<extra></extra>"))
-        fig.update_layout(height=380, title="Consensus importance (average of 5 methods)",
+        fig.update_layout(height=380, title="Consensus importance (ordered by mean rank over 5 methods)",
                           xaxis_title="Consensus score (1 = top for every method)")
-        st.plotly_chart(fig, use_container_width=True)
-        st.caption("* simulated column (grey) — its importance reflects our simulation assumptions.")
+        st.plotly_chart(fig, width="stretch")
+        st.caption("Grey bars marked with an asterisk are simulated columns; their importance reflects the "
+                   "simulation formula, not real-world evidence.")
     with c2:
         st.markdown("##### Key findings")
-        for s in m.get("insights", []):
+        insights = m.get("insights", [])
+        for s in insights[:4]:
             st.markdown(f'<div class="card insight"><p>{s}</p></div>', unsafe_allow_html=True)
+        with st.expander(f"{len(insights) - 4} more findings"):
+            for s in insights[4:]:
+                st.markdown(f"- {s}")
 
     st.markdown("##### Do the methods agree?")
     ag = load_csv("method_agreement.csv", index_col=0)
-    labels = m["explainability"]["methods"]
+    labels = {"lr_coef": "LR", "rf_impurity": "RF", "xgb_gain": "XGBoost", "permutation": "Permutation",
+              "shap": "SHAP"}
     ag.index = [labels[i] for i in ag.index]
     ag.columns = [labels[c] for c in ag.columns]
     a1, a2 = st.columns([3, 2], gap="large")
     a1.dataframe(ag.style.format("{:.2f}").background_gradient(cmap="Blues", vmin=0, vmax=1),
-                 use_container_width=True)
-    ranks = fi[["feature"] + [c for c in fi.columns if c.endswith("_rank") and c != "consensus_rank"]].copy()
-    ranks.columns = ["Feature"] + [labels[c[:-5]] for c in ranks.columns[1:]]
-    a2.dataframe(ranks, hide_index=True, use_container_width=True)
-    st.caption(f"Spearman rank correlation between methods; mean pairwise ρ = "
+                 width="stretch")
+    ranks = fi[["consensus_rank", "feature"] + [f"{k}_rank" for k in labels]].copy()
+    ranks.columns = ["Rank", "Feature"] + list(labels.values())
+    a2.dataframe(ranks, hide_index=True, width="stretch")
+    st.caption("Left: Spearman rank correlation between methods (LR = |logistic coefficient|, RF = random-forest "
+               "impurity, XGBoost = gain, Permutation and SHAP = best model). Right: rank given by each method. "
+               f"Mean pairwise ρ = "
                f"{m['explainability']['mean_pairwise_spearman']:.2f} (1 = identical ranking).")
 
     s1, s2 = st.columns(2, gap="large")
@@ -65,7 +73,7 @@ with tab1:
                                    hovertemplate=f"{nice_feature(f)} = %{{x}}<br>Avg. probability %{{y:.1f}}%<extra></extra>"))
         fig.update_layout(height=360, title=f"Partial dependence: {nice_feature(f)}",
                           xaxis_title=nice_feature(f), yaxis_title="Avg. placement probability (%)")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
 # ------------------------------------------------------------------ data explorer
 with tab2:
@@ -79,7 +87,7 @@ with tab2:
                                marker_colors=[cmap[k] for k in counts.index],
                                hovertemplate="%{label}: %{value:,} (%{percent})<extra></extra>"))
         fig.update_layout(height=340, title="Class balance")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     with c2:
         f = st.selectbox("Feature distribution by class", config.CORE_FEATURES, format_func=nice_feature)
         kind = st.radio("Chart", ["Histogram", "Violin"], horizontal=True, label_visibility="collapsed")
@@ -89,7 +97,7 @@ with tab2:
         else:
             fig = px.violin(df, x="Status", y=f, color="Status", box=True, color_discrete_map=cmap)
         fig.update_layout(height=300, legend_title_text="")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     st.markdown("##### Placement rate by feature value")
     f = st.selectbox("Feature", ["CGPA", "AptitudeScore", "Internships", "Projects", "Certifications",
@@ -102,13 +110,13 @@ with tab2:
                            customdata=rate["size"],
                            hovertemplate="%{x}<br>Placement rate %{y:.1f}%<br>%{customdata} students<extra></extra>"))
     fig.update_layout(height=320, yaxis_title="Placement rate (%)", xaxis_title=nice_feature(f))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     st.markdown("##### Correlation heatmap")
     corr = df[config.CORE_FEATURES + [config.TARGET]].corr()
     fig = px.imshow(corr, text_auto=".2f", color_continuous_scale="RdBu_r", zmin=-1, zmax=1, aspect="auto")
     fig.update_layout(height=520)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 # ------------------------------------------------------------------ data quality
 with tab3:
