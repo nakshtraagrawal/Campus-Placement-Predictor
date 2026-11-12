@@ -1,0 +1,477 @@
+{
+  "data": {
+    "source": "local file (originally from https://huggingface.co/datasets/Krooz/Campus_Recruitment_CSV)",
+    "huggingface_mirror": "https://huggingface.co/datasets/Krooz/Campus_Recruitment_CSV",
+    "kaggle_original": "https://www.kaggle.com/datasets/ruchikakumbhar/placement-prediction-dataset",
+    "raw_rows": 10000,
+    "raw_columns": 12,
+    "raw_placement_rate": 0.4197,
+    "augmented_rows": 10100,
+    "simulated_columns": [
+      "ProgrammingSkills",
+      "Attendance"
+    ]
+  },
+  "clean_data": {
+    "rows": 10000,
+    "train_rows": 8000,
+    "test_rows": 2000,
+    "placement_rate": 0.4197,
+    "n_placed": 4197,
+    "n_not_placed": 5803
+  },
+  "feature_selection": {
+    "top3_by_method": {
+      "mutual_info": [
+        "AptitudeScore",
+        "Projects",
+        "ProgrammingSkills"
+      ],
+      "anova_f": [
+        "AptitudeScore",
+        "Projects",
+        "ProgrammingSkills"
+      ],
+      "chi2": [
+        "Certifications",
+        "AptitudeScore",
+        "Projects"
+      ],
+      "rfe_rank": [
+        "AptitudeScore",
+        "ProgrammingSkills",
+        "CommunicationSkills"
+      ]
+    }
+  },
+  "vif": {
+    "max_vif": 2.196903808366129,
+    "max_vif_feature": "ProgrammingSkills"
+  },
+  "training": {
+    "best_model": "xgboost",
+    "best_model_name": "XGBoost",
+    "selection_criterion": "mean 5-fold CV ROC-AUC on the training set",
+    "class_balance": {
+      "minority_share_train": 0.41975,
+      "class_weight": null
+    },
+    "search": {
+      "method": "RandomizedSearchCV",
+      "cv_folds": 5,
+      "n_iter": {
+        "logistic_regression": 20,
+        "knn": 20,
+        "svm": 10,
+        "random_forest": 20,
+        "xgboost": 20
+      },
+      "scoring": "roc_auc"
+    },
+    "models": {
+      "logistic_regression": {
+        "model": "Logistic Regression",
+        "accuracy": 0.7995,
+        "precision": 0.7697044334975369,
+        "recall": 0.7449344457687723,
+        "f1": 0.7571168988491823,
+        "roc_auc": 0.8661320077734969,
+        "pr_auc": 0.8378363619517203,
+        "mcc": 0.5867111470072117,
+        "brier": 0.14376835621622558,
+        "cv_roc_auc_mean": 0.8613526126306219,
+        "cv_roc_auc_std": 0.005130870143586062,
+        "cv_f1_mean": 0.7403271807462735,
+        "cv_f1_std": 0.010193095135953874,
+        "train_time_s": 8.297809799998504
+      },
+      "knn": {
+        "model": "KNN",
+        "accuracy": 0.7985,
+        "precision": 0.7759493670886076,
+        "recall": 0.7306317044100119,
+        "f1": 0.7526089625537139,
+        "roc_auc": 0.8636835410680244,
+        "pr_auc": 0.8211692199742617,
+        "mcc": 0.5836488226399408,
+        "brier": 0.1453932846976141,
+        "cv_roc_auc_mean": 0.8599408451622246,
+        "cv_roc_auc_std": 0.0048862674169171914,
+        "cv_f1_mean": 0.7358832861770561,
+        "cv_f1_std": 0.009439053520073107,
+        "train_time_s": 5.433973800001695
+      },
+      "svm": {
+        "model": "SVM (RBF)",
+        "accuracy": 0.8025,
+        "precision": 0.7890625,
+        "recall": 0.7222884386174017,
+        "f1": 0.7542003733665215,
+        "roc_auc": 0.8678792993176118,
+        "pr_auc": 0.8383366165414804,
+        "mcc": 0.5912839054711366,
+        "brier": 0.1419669205864621,
+        "cv_roc_auc_mean": 0.861819611873942,
+        "cv_roc_auc_std": 0.005438036835385995,
+        "cv_f1_mean": 0.7347240309160941,
+        "cv_f1_std": 0.010037394564125945,
+        "train_time_s": 34.69843050000054
+      },
+      "random_forest": {
+        "model": "Random Forest",
+        "accuracy": 0.791,
+        "precision": 0.7723156532988357,
+        "recall": 0.7115613825983313,
+        "f1": 0.7406947890818859,
+        "roc_auc": 0.8648179459776877,
+        "pr_auc": 0.8262335600160369,
+        "mcc": 0.5674769372411012,
+        "brier": 0.1449433217617383,
+        "cv_roc_auc_mean": 0.8635776339793415,
+        "cv_roc_auc_std": 0.004619286557414098,
+        "cv_f1_mean": 0.7388827385457326,
+        "cv_f1_std": 0.013050599178777322,
+        "train_time_s": 28.624437400001625
+      },
+      "xgboost": {
+        "model": "XGBoost",
+        "accuracy": 0.7975,
+        "precision": 0.7767857142857143,
+        "recall": 0.7258641239570918,
+        "f1": 0.7504621072088724,
+        "roc_auc": 0.8685445431017402,
+        "pr_auc": 0.8342244432208915,
+        "mcc": 0.5813528434359454,
+        "brier": 0.14281454697575174,
+        "cv_roc_auc_mean": 0.8645612254575124,
+        "cv_roc_auc_std": 0.004655015646979124,
+        "cv_f1_mean": 0.7406715226977887,
+        "cv_f1_std": 0.009846509862742296,
+        "train_time_s": 9.960496900002909
+      }
+    },
+    "hyperparameters": {
+      "logistic_regression": {
+        "C": 1.2357483710912178,
+        "penalty": "l2",
+        "solver": "liblinear"
+      },
+      "knn": {
+        "n_neighbors": 136,
+        "p": 1,
+        "weights": "distance"
+      },
+      "svm": {
+        "C": 0.5342937261279778,
+        "gamma": 0.007476312062252299
+      },
+      "random_forest": {
+        "max_depth": 10,
+        "max_features": "sqrt",
+        "min_samples_leaf": 1,
+        "n_estimators": 353
+      },
+      "xgboost": {
+        "colsample_bytree": 0.7427013306774357,
+        "learning_rate": 0.026000059117302653,
+        "max_depth": 5,
+        "min_child_weight": 13,
+        "n_estimators": 140,
+        "reg_lambda": 0.39133348581043736,
+        "subsample": 0.6661067756252009
+      }
+    },
+    "confusion_matrices": {
+      "logistic_regression": [
+        [
+          974,
+          187
+        ],
+        [
+          214,
+          625
+        ]
+      ],
+      "knn": [
+        [
+          984,
+          177
+        ],
+        [
+          226,
+          613
+        ]
+      ],
+      "svm": [
+        [
+          999,
+          162
+        ],
+        [
+          233,
+          606
+        ]
+      ],
+      "random_forest": [
+        [
+          985,
+          176
+        ],
+        [
+          242,
+          597
+        ]
+      ],
+      "xgboost": [
+        [
+          986,
+          175
+        ],
+        [
+          230,
+          609
+        ]
+      ]
+    },
+    "cv_fold_roc_auc": {
+      "logistic_regression": [
+        0.8662895114942529,
+        0.8625676698481115,
+        0.8644646705665026,
+        0.8618773451574455,
+        0.8515638660867975
+      ],
+      "knn": [
+        0.8658156622023809,
+        0.8628057971572252,
+        0.8615478114737275,
+        0.8579726931030114,
+        0.8515622618747783
+      ],
+      "svm": [
+        0.8676926185344828,
+        0.8639964337027914,
+        0.8634191553776682,
+        0.8624500488482559,
+        0.8515398029065113
+      ],
+      "random_forest": [
+        0.8703352704228242,
+        0.8645737120279146,
+        0.8645007504618227,
+        0.8625206341770955,
+        0.8559578028070502
+      ],
+      "xgboost": [
+        0.8694565245279148,
+        0.864337990045156,
+        0.866965408199918,
+        0.8661958839128014,
+        0.855850320601772
+      ]
+    },
+    "statistical_test": {
+      "model_a": "xgboost",
+      "model_b": "random_forest",
+      "mean_diff_cv_roc_auc": 0.0009835914781709976,
+      "ttest_t": 1.1142678557240742,
+      "ttest_p": 0.32759833460320675,
+      "corrected_ttest_t": 0.7428452371493828,
+      "corrected_ttest_p": 0.49883266798947745,
+      "mcnemar_table": [
+        [
+          1559,
+          36
+        ],
+        [
+          23,
+          382
+        ]
+      ],
+      "mcnemar_stat": 2.440677966101695,
+      "mcnemar_p": 0.11822511872392379,
+      "significant_at_0.05": false,
+      "interpretation": "XGBoost vs Random Forest: mean CV ROC-AUC difference +0.0010. Paired t-test p = 0.328 (corrected p = 0.499); McNemar test on the test set p = 0.118. The difference is NOT statistically significant at the 5% level, so the two models perform practically the same on this data."
+    },
+    "threshold": {
+      "default": 0.5,
+      "f1_optimal_cv": 0.3704553544521332,
+      "best_model_test_at_f1_threshold": {
+        "accuracy": 0.7905,
+        "precision": 0.720125786163522,
+        "recall": 0.8188319427890346,
+        "f1": 0.7663134411600669,
+        "roc_auc": 0.8685445431017402,
+        "pr_auc": 0.8342244432208915,
+        "mcc": 0.5817916446927185,
+        "brier": 0.14281454697575174
+      }
+    },
+    "ablation": [
+      {
+        "variant": "(a) 8 core features",
+        "n_features": 8,
+        "cv_roc_auc_mean": 0.8645612254575124,
+        "cv_roc_auc_std": 0.004655015646979124,
+        "delta_vs_core": 0.0
+      },
+      {
+        "variant": "(b) core + engineered",
+        "n_features": 11,
+        "cv_roc_auc_mean": 0.8637649640600589,
+        "cv_roc_auc_std": 0.0040902068117265765,
+        "delta_vs_core": -0.0007962613974534793
+      },
+      {
+        "variant": "(c) core + extra Kaggle columns",
+        "n_features": 12,
+        "cv_roc_auc_mean": 0.8830117620206208,
+        "cv_roc_auc_std": 0.0049769873598695885,
+        "delta_vs_core": 0.018450536563108466
+      },
+      {
+        "variant": "(d) core - simulated columns",
+        "n_features": 6,
+        "cv_roc_auc_mean": 0.856439651033756,
+        "cv_roc_auc_std": 0.005453424252544802,
+        "delta_vs_core": -0.008121574423756384
+      }
+    ],
+    "engineered_features": {
+      "cv_gain": -0.0007962613974534793,
+      "used": false,
+      "rule": ">= 0.005 CV ROC-AUC"
+    },
+    "learning_curve": {
+      "train_sizes": [
+        640,
+        1792,
+        2944,
+        4096,
+        5248,
+        6400
+      ],
+      "train_mean": [
+        0.8825749398735887,
+        0.8878558434547766,
+        0.8877537829069517,
+        0.8848463946327089,
+        0.8858722640128333,
+        0.8839280291379694
+      ],
+      "val_mean": [
+        0.8590802152591305,
+        0.8616610644871407,
+        0.8623552913545508,
+        0.8630647974747887,
+        0.8640160452906767,
+        0.8645612254575124
+      ],
+      "final_gap": 0.019366803680457068
+    },
+    "xgboost_available": true
+  },
+  "shap": {
+    "base_value": 0.411761061932358,
+    "explainer": "tree",
+    "n_explained": 500,
+    "mean_abs": {
+      "AptitudeScore": 0.08475121292862306,
+      "ProgrammingSkills": 0.05807025863350373,
+      "Certifications": 0.0570567446080254,
+      "CommunicationSkills": 0.04657944576880883,
+      "CGPA": 0.039969767549665546,
+      "Projects": 0.039418086962017956,
+      "Attendance": 0.03768356857474751,
+      "Internships": 0.006542761491873102
+    },
+    "top3": [
+      "AptitudeScore",
+      "ProgrammingSkills",
+      "Certifications"
+    ]
+  },
+  "explainability": {
+    "methods": {
+      "lr_coef": "LR |coefficient|",
+      "rf_impurity": "RF impurity",
+      "xgb_gain": "XGBoost gain",
+      "permutation": "Permutation (best model)",
+      "shap": "Mean |SHAP| (best model)"
+    },
+    "consensus_ranking": [
+      "AptitudeScore",
+      "ProgrammingSkills",
+      "Certifications",
+      "CommunicationSkills",
+      "Projects",
+      "CGPA",
+      "Attendance",
+      "Internships"
+    ],
+    "top3": [
+      "AptitudeScore",
+      "ProgrammingSkills",
+      "Certifications"
+    ],
+    "mean_pairwise_spearman": 0.5976190476190476,
+    "lr_odds_ratios": {
+      "AptitudeScore": 2.0558308815011923,
+      "ProgrammingSkills": 1.615605220078728,
+      "CommunicationSkills": 1.487731197423831,
+      "Attendance": 1.3341532200527848,
+      "Certifications": 1.3013998704920118,
+      "CGPA": 1.2569192440790273,
+      "Projects": 1.2204178536047283,
+      "Internships": 0.9411038741210371
+    },
+    "permutation": {
+      "AptitudeScore": {
+        "mean": 0.04787234916264492,
+        "std": 0.004086524814089244
+      },
+      "ProgrammingSkills": {
+        "mean": 0.013316476384358988,
+        "std": 0.0026457054652591076
+      },
+      "CommunicationSkills": {
+        "mean": 0.011976287344250307,
+        "std": 0.002037509377432403
+      },
+      "Certifications": {
+        "mean": 0.011719685980295252,
+        "std": 0.002436316263546397
+      },
+      "Projects": {
+        "mean": 0.008377605923133562,
+        "std": 0.001638215269975706
+      },
+      "CGPA": {
+        "mean": 0.005379979447252259,
+        "std": 0.0019452927106254697
+      },
+      "Attendance": {
+        "mean": 0.004735011225988878,
+        "std": 0.00133413155636241
+      },
+      "Internships": {
+        "mean": 0.0005322463578416259,
+        "std": 0.0003633384942324001
+      }
+    }
+  },
+  "insights": [
+    "AptitudeScore is the most influential feature overall (consensus rank 1; ranked first by 4 of 5 methods).",
+    "The three most influential features are AptitudeScore, ProgrammingSkills and Certifications.",
+    "Average placement probability rises from 21% at AptitudeScore = 63 to 55% at AptitudeScore = 90; the steepest change is between 89 and 90.",
+    "Average placement probability rises from 32% at ProgrammingSkills = 1 to 51% at ProgrammingSkills = 10; the steepest change is between 4 and 5.",
+    "Average placement probability rises from 38% at Certifications = 0 to 46% at Certifications = 3; the steepest change is between 1 and 2.",
+    "In the logistic regression model, a one-standard-deviation increase in AptitudeScore multiplies the odds of placement by 2.06.",
+    "Internships has a negative coefficient in the logistic model: holding the other features fixed, higher values slightly reduce the odds of placement (odds ratio 0.94).",
+    "The five importance methods agree moderately on the ranking: mean pairwise Spearman rank correlation = 0.60.",
+    "Internships is the least influential feature (consensus rank 8).",
+    "The simulated columns rank ProgrammingSkills #2 and Attendance #7 (their influence reflects the simulation formula, not real evidence); removing both has only a small effect on CV ROC-AUC (-0.0081).",
+    "Adding the extra Kaggle columns (extracurriculars, placement training, SSC/HSC marks) changes CV ROC-AUC by +0.0185; they are left out of the main model because the problem statement defines the 8 core features.",
+    "Engineered features changed CV ROC-AUC by -0.0008 (not used; rule: gain >= 0.005)."
+  ]
+}

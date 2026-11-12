@@ -1,0 +1,96 @@
+{
+  "injection_log": {
+    "rows_before_injection": 10000,
+    "invalid_values": {
+      "aptitude_over_100": 11,
+      "attendance_negative": 12,
+      "attendance_over_100": 12,
+      "cgpa_impossible": 6,
+      "cgpa_percentage": 9
+    },
+    "invalid_values_total": 50,
+    "missing_values": {
+      "CGPA": 300,
+      "AptitudeTestScore": 300,
+      "SoftSkillsRating": 300,
+      "Attendance": 300,
+      "ProgrammingSkills": 300
+    },
+    "type_noise_strings": {
+      "CGPA": 25,
+      "AptitudeTestScore": 25
+    },
+    "inconsistent_labels": 1500,
+    "inconsistent_categoricals": {
+      "ExtracurricularActivities": 1000,
+      "PlacementTraining": 1000
+    },
+    "duplicate_rows_added": 100,
+    "rows_after_injection": 10100
+  },
+  "cleaning_log": {
+    "rows_in": 10100,
+    "type_noise_whitespace_fixed": 52,
+    "unparsable_numeric_to_nan": {},
+    "labels_normalised": 1510,
+    "rows_dropped_unknown_target": 0,
+    "categoricals_normalised": {
+      "ExtracurricularActivities": 1012,
+      "PlacementTraining": 1007
+    },
+    "duplicates_removed": 100,
+    "cgpa_percentage_converted": 9,
+    "invalid_to_nan": {
+      "CGPA": 6,
+      "AptitudeScore": 11,
+      "Attendance": 24
+    },
+    "invalid_to_nan_total": 41,
+    "outliers_capped": {
+      "CGPA": 0,
+      "AptitudeScore": 0,
+      "CommunicationSkills": 0,
+      "Attendance": 25,
+      "SSC_Marks": 0,
+      "HSC_Marks": 0
+    },
+    "outliers_capped_total": 25,
+    "iqr_bounds_train": {
+      "CGPA": [
+        6.2,
+        9.4
+      ],
+      "AptitudeScore": [
+        52.0,
+        108.0
+      ],
+      "CommunicationSkills": [
+        2.95,
+        5.75
+      ],
+      "Attendance": [
+        58.2,
+        103.8
+      ],
+      "SSC_Marks": [
+        30.5,
+        106.5
+      ],
+      "HSC_Marks": [
+        43.0,
+        107.0
+      ]
+    },
+    "missing_after_cleaning": {
+      "CGPA": 306,
+      "ProgrammingSkills": 300,
+      "CommunicationSkills": 300,
+      "AptitudeScore": 311,
+      "Attendance": 324
+    },
+    "missing_after_cleaning_total": 1541,
+    "rows_out": 10000,
+    "train_rows": 8000,
+    "test_rows": 2000
+  }
+}

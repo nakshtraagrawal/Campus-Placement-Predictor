@@ -1,0 +1,19 @@
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrr}
+\toprule
+Step & Injected & Fixed / result \\
+\midrule
+Rows in augmented file & -- & 10100 \\
+Whitespace/type noise fixed & 50 & 52 \\
+Target labels normalised & 1500 & 1510 \\
+Yes/No categoricals normalised & 2000 & 2019 \\
+Exact duplicates removed & 100 & 100 \\
+CGPA percentage $\rightarrow$ CGPA & 9 & 9 \\
+Out-of-range values $\rightarrow$ NaN & 41 & 41 \\
+Outliers capped (IQR, 1.5$\times$) & -- & 25 \\
+Missing cells imputed (median, in pipeline) & 1500 & 1541 \\
+Rows after cleaning & -- & 10000 \\
+Train / test rows (stratified 80/20) & -- & 8000 / 2000 \\
+\bottomrule
+\end{tabular}

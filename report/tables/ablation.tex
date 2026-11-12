@@ -1,0 +1,12 @@
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrr}
+\toprule
+Feature set & \# & CV ROC-AUC & $\Delta$ \\
+\midrule
+(a) 8 core features & 8 & 0.8646 $\pm$ 0.0047 & +0.0000 \\
+(b) core + engineered & 11 & 0.8638 $\pm$ 0.0041 & -0.0008 \\
+(c) core + extra Kaggle columns & 12 & 0.8830 $\pm$ 0.0050 & +0.0185 \\
+(d) core - simulated columns & 6 & 0.8564 $\pm$ 0.0055 & -0.0081 \\
+\bottomrule
+\end{tabular}

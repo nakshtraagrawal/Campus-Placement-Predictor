@@ -1,0 +1,14 @@
+\begin{itemize}
+\item AptitudeScore is the most influential feature overall (consensus rank 1; ranked first by 4 of 5 methods).
+\item The three most influential features are AptitudeScore, ProgrammingSkills and Certifications.
+\item Average placement probability rises from 21\% at AptitudeScore = 63 to 55\% at AptitudeScore = 90; the steepest change is between 89 and 90.
+\item Average placement probability rises from 32\% at ProgrammingSkills = 1 to 51\% at ProgrammingSkills = 10; the steepest change is between 4 and 5.
+\item Average placement probability rises from 38\% at Certifications = 0 to 46\% at Certifications = 3; the steepest change is between 1 and 2.
+\item In the logistic regression model, a one-standard-deviation increase in AptitudeScore multiplies the odds of placement by 2.06.
+\item Internships has a negative coefficient in the logistic model: holding the other features fixed, higher values slightly reduce the odds of placement (odds ratio 0.94).
+\item The five importance methods agree moderately on the ranking: mean pairwise Spearman rank correlation = 0.60.
+\item Internships is the least influential feature (consensus rank 8).
+\item The simulated columns rank ProgrammingSkills \#2 and Attendance \#7 (their influence reflects the simulation formula, not real evidence); removing both has only a small effect on CV ROC-AUC (-0.0081).
+\item Adding the extra Kaggle columns (extracurriculars, placement training, SSC/HSC marks) changes CV ROC-AUC by +0.0185; they are left out of the main model because the problem statement defines the 8 core features.
+\item Engineered features changed CV ROC-AUC by -0.0008 (not used; rule: gain >= 0.005).
+\end{itemize}

@@ -1,0 +1,12 @@
+\footnotesize
+\begin{tabular}{p{0.24\columnwidth}p{0.68\columnwidth}}
+\toprule
+Model & Tuned hyper-parameters (best of RandomizedSearchCV) \\
+\midrule
+Logistic Regression & C=1.24, penalty=l2 \\
+KNN & n\_neighbors=136, p=1, weights=distance \\
+SVM (RBF) & C=0.534, gamma=0.00748 \\
+Random Forest & max\_depth=10, max\_features=sqrt, min\_samples\_leaf=1, n\_estimators=353 \\
+XGBoost & colsample\_bytree=0.743, learning\_rate=0.026, max\_depth=5, min\_child\_weight=13, n\_estimators=140, reg\_lambda=0.391, subsample=0.666 \\
+\bottomrule
+\end{tabular}

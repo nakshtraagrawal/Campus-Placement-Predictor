@@ -1,0 +1,89 @@
+{
+  "model_key": "xgboost",
+  "model_name": "XGBoost",
+  "features": [
+    "CGPA",
+    "ProgrammingSkills",
+    "Internships",
+    "Certifications",
+    "CommunicationSkills",
+    "AptitudeScore",
+    "Projects",
+    "Attendance"
+  ],
+  "uses_engineered_features": false,
+  "feature_ranges": {
+    "CGPA": {
+      "min": 0.0,
+      "max": 10.0,
+      "default": 7.7,
+      "integer": false,
+      "data_min": 6.5,
+      "data_max": 9.1
+    },
+    "ProgrammingSkills": {
+      "min": 1,
+      "max": 10,
+      "default": 6.0,
+      "integer": true,
+      "data_min": 1.0,
+      "data_max": 10.0
+    },
+    "Internships": {
+      "min": 0,
+      "max": 3,
+      "default": 1.0,
+      "integer": true,
+      "data_min": 0.0,
+      "data_max": 2.0
+    },
+    "Certifications": {
+      "min": 0,
+      "max": 5,
+      "default": 1.0,
+      "integer": true,
+      "data_min": 0.0,
+      "data_max": 3.0
+    },
+    "CommunicationSkills": {
+      "min": 1.0,
+      "max": 5.0,
+      "default": 4.4,
+      "integer": false,
+      "data_min": 3.0,
+      "data_max": 4.8
+    },
+    "AptitudeScore": {
+      "min": 0,
+      "max": 100,
+      "default": 80.0,
+      "integer": true,
+      "data_min": 60.0,
+      "data_max": 90.0
+    },
+    "Projects": {
+      "min": 0,
+      "max": 5,
+      "default": 2.0,
+      "integer": true,
+      "data_min": 0.0,
+      "data_max": 3.0
+    },
+    "Attendance": {
+      "min": 0.0,
+      "max": 100.0,
+      "default": 80.9,
+      "integer": false,
+      "data_min": 58.19999999999999,
+      "data_max": 100.0
+    }
+  },
+  "threshold": 0.5,
+  "f1_optimal_threshold_cv": 0.3704553544521332,
+  "test_roc_auc": 0.8685445431017402,
+  "cv_roc_auc_mean": 0.8645612254575124,
+  "trained_on": "2026-11-12T22:23:39",
+  "sklearn_version": "1.7.2",
+  "random_state": 42,
+  "is_tree_model": true
+}
