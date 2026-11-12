@@ -43,6 +43,18 @@ def copy_figures_to_report() -> None:
     log.info("Copied %d figures to %s", n, config.REPORT_FIG_DIR)
 
 
+def make_overleaf_zip() -> None:
+    """Zip the LaTeX sources (no build files) so the report can be uploaded to Overleaf."""
+    import zipfile
+    keep = {".tex", ".bib", ".cls", ".bst", ".png"}
+    out = config.ROOT / "report_overleaf.zip"
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+        for p in sorted(config.REPORT_DIR.rglob("*")):
+            if p.is_file() and p.suffix in keep:
+                z.write(p, p.relative_to(config.REPORT_DIR))
+    log.info("Wrote %s", out.name)
+
+
 def print_summary() -> None:
     comp = pd.read_csv(config.MODEL_COMPARISON_CSV)
     cols = ["model", "accuracy", "precision", "recall", "f1", "roc_auc", "pr_auc", "mcc",
@@ -77,7 +89,7 @@ def main() -> None:
     step("6/8 Train, tune and evaluate models", train.main)
     step("7/8 Feature influence (explainability)", explain.main)
     step("8/8 Report tables, architecture diagram, copy figures",
-         lambda: (make_report_tables.main(), copy_figures_to_report()))
+         lambda: (make_report_tables.main(), copy_figures_to_report(), make_overleaf_zip()))
     print_summary()
     log.info("ALL DONE in %.1f s", time.perf_counter() - t0)
 

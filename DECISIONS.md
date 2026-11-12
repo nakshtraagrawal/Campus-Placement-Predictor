@@ -34,3 +34,11 @@ Short log of choices made while building the project (useful for the viva).
 - **SHAP values in probability units:** for tree models we use interventional TreeSHAP with `model_output="probability"` (100-row background), so "+0.12" means "+12 percentage points". Non-tree models fall back to KernelExplainer on a 200-row sample.
 - **Consensus ranking = mean rank over 5 methods** (LR |coef|, RF impurity, XGBoost gain, permutation, SHAP); the normalised mean score is reported as a tie-breaker. Method agreement is the pairwise Spearman correlation of the normalised importances.
 - **Insight wording is rule-based on the numbers** (e.g. "agree strongly" only if mean ρ ≥ 0.8, "moderately" if ≥ 0.5).
+
+## Web app
+- **No emojis / decorative icons** in the UI (page names, buttons, verdicts) to keep a professional look; colour and layout carry the meaning instead.
+- **`width="stretch"`** is used instead of `use_container_width` (deprecated in Streamlit 1.67); `requirements.txt` therefore requires `streamlit>=1.50`.
+- **Sliders for continuous features** use the valid domain maximum but start near the observed minimum (e.g. CGPA from 6 rather than 0), so they stay usable; the backend still validates the full domain range.
+- **Risk bands** on the batch page: High < 35%, Medium 35–65%, Low ≥ 65% placement probability.
+- **Preset profiles:** "Strong" and "At risk" are hand-picked illustrative profiles; "Average" uses the training-data medians from `model_meta.json`.
+- **Playwright** (screenshots only) is an optional dev tool and is not in `requirements.txt`.

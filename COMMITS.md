@@ -1,11 +1,26 @@
 # Suggested commits
 
-Copy-paste these in order (the repository already exists, so no `git init` is needed).
+Copy-paste these in order (the repository already exists, so no `git init` is needed). Messages are kept to one line.
 
 ## Part 1 — data + ML pipeline
 
 ```
 git add .gitignore CLAUDE.md docs/ README.md requirements.txt DECISIONS.md COMMITS.md run_all.py src/ data/ models/ reports/ report/figures/ report/tables/
-git commit -m "feat: data + ML pipeline (cleaning, 5 tuned models, explainability)" -m "Downloads the placement dataset, adds 2 simulated columns and injected data issues, cleans it, tunes LR/KNN/SVM/RF/XGBoost with 5-fold CV and runs multi-method feature-influence analysis. python run_all.py rebuilds everything."
+git commit -m "feat: data + ML pipeline (cleaning, 5 tuned models, explainability)"
 ```
 Note: `data/` (~1.5 MB) and `models/` (~6.5 MB, compressed) are small, so they are committed rather than ignored.
+
+## Part 2 — Streamlit app (verified, no emojis)
+
+```
+git add -A app/ .streamlit/ reports/screenshots/ requirements.txt DECISIONS.md COMMITS.md
+git commit -m "feat: polish Streamlit app and add screenshots"
+```
+`-A` on `app/` records the page renames (the old emoji file names are deleted).
+
+## Part 3a — notebook + IEEE report
+
+```
+git add notebooks/ report/ report_overleaf.zip src/ run_all.py app/pages/5_About.py reports/ DECISIONS.md COMMITS.md
+git commit -m "docs: add walkthrough notebook and IEEE LaTeX report"
+```

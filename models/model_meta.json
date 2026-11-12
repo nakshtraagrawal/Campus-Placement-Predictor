@@ -82,7 +82,7 @@
   "f1_optimal_threshold_cv": 0.3704553544521332,
   "test_roc_auc": 0.8685445431017402,
   "cv_roc_auc_mean": 0.8645612254575124,
-  "trained_on": "2026-11-12T22:23:39",
+  "trained_on": "2026-11-12T22:46:23",
   "sklearn_version": "1.7.2",
   "random_state": 42,
   "is_tree_model": true

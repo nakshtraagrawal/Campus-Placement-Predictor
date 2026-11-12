@@ -69,6 +69,7 @@ REPORT_TABLE_DIR = REPORT_DIR / "tables"
 # --------------------------------------------------------------------------
 HF_REPO_ID = "Krooz/Campus_Recruitment_CSV"
 HF_URL = f"https://huggingface.co/datasets/{HF_REPO_ID}"
+# Kaggle API fallback only. NOTE: this slug could not be verified online - check it before relying on it.
 KAGGLE_URL = "https://www.kaggle.com/datasets/ruchikakumbhar/placement-prediction-dataset"
 MIN_ROWS = 5000
 
